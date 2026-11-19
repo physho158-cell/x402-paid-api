@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="my">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Superteam Submit — 1 ချက်နှိပ် Copy</title>
+<style>
+*{box-sizing:border-box;font-family:system-ui,Myanmar Text,sans-serif}
+body{margin:0;background:#0f1115;color:#e8ecf2;padding:14px}
+.card{max-width:640px;margin:0 auto}
+h1{font-size:18px}
+.item{background:#171a21;border:1px solid #2a2f3a;border-radius:12px;padding:14px;margin:12px 0}
+.item h3{margin:0 0 4px;font-size:15px}
+.meta{color:#9aa3b2;font-size:12px}
+.btn{padding:10px 14px;border-radius:8px;border:0;font-weight:700;cursor:pointer;margin-top:8px}
+.primary{background:#6c5cff;color:white}
+.ghost{background:#232836;color:#e8ecf2;border:1px solid #2a2f3a}
+a{color:#8ea2ff}
+pre{white-space:pre-wrap;background:#0f1115;border:1px solid #2a2f3a;border-radius:8px;padding:10px;font-size:12px;max-height:240px;overflow:auto}
+</style>
+</head>
+<body>
+<div class="card">
+<h1>📋 Superteam — Submit နှိပ်ရုံ (ငါ ရေးပြီးသား)</h1>
+<p style="color:#9aa3b2;font-size:13px">အဆင့်: 1) အောက်က bounty link ဖွင့် → 2) Submit နှိပ် → 3) စာကို Copy ပြီး paste → 4) တင်။ <br>Wallet: Phantom (Solana) — အခမဲ့, USDC အဲထဲဝင်မယ်။</p>
+
+<div class="item">
+<h3>1️⃣ $500 — Fundraising Article ⭐ အကောင်းဆုံး</h3>
+<div class="meta">Deadline 11-23 · ပြိုင်ဘက် ~25 · fundraising_opportunities_article.md</div>
+<a href="https://earn.superteam.fun/listing/write-an-article-on-fundraising-opportunities-for-early-and-mid-stage-projects" target="_blank">👉 Bounty ဖွင့်</a>
+<button class="btn primary" onclick="copyFile('fundraising_opportunities_article.md',this)">📋 စာကို Copy</button>
+<button class="btn ghost" onclick="toggle('p1')">👁️ ကြည့်</button>
+<pre id="p1" style="display:none"></pre>
+</div>
+
+<div class="item">
+<h3>2️⃣ $400 — Students Workshop Thread</h3>
+<div class="meta">Deadline 11-23 · ~32 · students_workshop_thread.md</div>
+<a href="https://earn.superteam.fun/listing/write-a-twitter-thread-on-opportunities-for-students-workshop" target="_blank">👉 Bounty ဖွင့်</a>
+<button class="btn primary" onclick="copyFile('students_workshop_thread.md',this)">📋 Thread Copy</button>
+<button class="btn ghost" onclick="toggle('p2')">👁️ ကြည့်</button>
+<pre id="p2" style="display:none"></pre>
+</div>
+
+<div class="item">
+<h3>3️⃣ $660 — Nosana Explainer</h3>
+<div class="meta">Deadline 11-25 · ~195 · nosana_explainer.md</div>
+<a href="https://earn.superteam.fun/listing/create-nosana-content-explainer-threadarticle-or-creative-memevideo" target="_blank">👉 Bounty ဖွင့်</a>
+<button class="btn primary" onclick="copyFile('nosana_explainer.md',this)">📋 စာကို Copy</button>
+<button class="btn ghost" onclick="toggle('p3')">👁️ ကြည့်</button>
+<pre id="p3" style="display:none"></pre>
+</div>
+
+<div class="item">
+<h3>4️⃣ $300 — Nosana Feedback (အလွယ်ဆုံး)</h3>
+<div class="meta">Deadline 11-29 · ~78 · nosa_feedback.md</div>
+<a href="https://earn.superteam.fun/listing/provide-feedback-on-our-new-support-assistant-nosa" target="_blank">👉 Bounty ဖွင့်</a>
+<button class="btn primary" onclick="copyFile('nosa_feedback.md',this)">📋 Feedback Copy</button>
+<button class="btn ghost" onclick="toggle('p4')">👁️ ကြည့်</button>
+<pre id="p4" style="display:none"></pre>
+</div>
+
+<p style="font-size:12px;color:#9aa3b2">Tip: #1 + #4 ကို အရင်တင် — နိုင်ခြေများတယ်။ Submit ပြီးရင် screenshot သိမ်းထားပါ။</p>
+</div>
+<script>
+const files={
+ 'fundraising_opportunities_article.md':'/superteam_articles/fundraising_opportunities_article.md',
+ 'students_workshop_thread.md':'/superteam_articles/students_workshop_thread.md',
+ 'nosana_explainer.md':'/superteam_articles/nosana_explainer.md',
+ 'nosa_feedback.md':'/superteam_articles/nosa_feedback.md'
+};
+async function copyFile(name,btn){
+ const url=files[name];
+ // fetch via same origin (served from /home/user)
+ const r=await fetch(url); const t=await r.text();
+ await navigator.clipboard.writeText(t);
+ const old=btn.textContent; btn.textContent='✅ Copied!'; setTimeout(()=>btn.textContent=old,1500);
+}
+async function toggle(id){
+ const el=document.getElementById(id);
+ if(el.style.display==='none'){
+   const map={'p1':'fundraising_opportunities_article.md','p2':'students_workshop_thread.md','p3':'nosana_explainer.md','p4':'nosa_feedback.md'};
+   const r=await fetch(files[map[id]]); el.textContent=await r.text(); el.style.display='block';
+ } else el.style.display='none';
+}
+</script>
+</body>
+</html>

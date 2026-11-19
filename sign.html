@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="my">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Sign — BasedAgents Wallet</title>
+<style>
+*{box-sizing:border-box;font-family:system-ui,Myanmar Text,sans-serif}
+body{margin:0;background:#0f1115;color:#e8ecf2;padding:16px}
+.card{max-width:520px;margin:0 auto;background:#171a21;border:1px solid #2a2f3a;border-radius:16px;padding:18px}
+h1{font-size:18px;margin:0 0 6px}
+.sub{color:#9aa3b2;font-size:13px;line-height:1.6}
+.msg{background:#0f1115;border:1px solid #2a2f3a;border-radius:10px;padding:12px;font-family:monospace;font-size:12px;white-space:pre-wrap;word-break:break-all;margin:10px 0}
+.btn{width:100%;padding:13px;border:0;border-radius:10px;font-weight:700;font-size:15px;cursor:pointer;margin-top:10px}
+.primary{background:#6c5cff;color:white}
+.secondary{background:#232836;color:#e8ecf2;border:1px solid #2a2f3a}
+.ok{background:#0e3d2e;border:1px solid #1b7a5e;color:#7ee8c7;border-radius:10px;padding:12px;margin-top:12px;font-size:13px;display:none;word-break:break-all}
+.warn{color:#ffb86b;font-size:12px;margin-top:8px}
+code{background:#232836;padding:2px 6px;border-radius:6px;font-size:12px}
+</style>
+</head>
+<body>
+<div class="card">
+<h1>🔑 BasedAgents Wallet ချိတ်မယ်</h1>
+<div class="sub">သင့် <code>0x0A25…CD1e6</code> ကို USDC ဝင်မယ့်နေရာအဖြစ် မှတ်ဖို့ sign 1 ချက်ပဲ လိုပါတယ်။ ငွေမကုန်၊ gas မလို။</div>
+<div class="msg" id="msg">BasedAgents payout wallet
+Agent: ag_6rDnkLjwf5d9C9YqGtLjWvCDczFegoNEmuGcvRu1JkSc
+Wallet: 0x0a25cf3d6ab55ca3f69cec13416dc20ca59cd1e6
+Network: eip155:8453
+Issued: 2026-11-19T16:14:42Z
+Nonce: 68d3f27b638b1fbb
+
+Signing proves you control this wallet and lets BasedAgents pay this agent's bounties to it. It moves no funds.</div>
+<div class="warn">⏰ 16:29 UTC အထိပဲ — ကျော်ရင် "အသစ်ပေး" လို့ပြော</div>
+<button class="btn primary" id="connectBtn" onclick="connectAndSign()">🔗 Connect Wallet & Sign</button>
+<button class="btn secondary" onclick="navigator.clipboard.writeText(document.getElementById('msg').innerText);this.textContent='✅ Copied'">📋 စာကို Copy</button>
+<div class="ok" id="box"></div>
+<div class="warn" id="err" style="display:none"></div>
+<p class="sub">Trust Wallet → Discover/Browser မှာ ဒီ link ကိုဖွင့်ရင် အလွယ်ဆုံးပါ။ MetaMask/Rabby မှာလည်းရပါတယ်။</p>
+</div>
+<script>
+const MSG=document.getElementById('msg').innerText;
+const WALLET="0x0A25Cf3d6AB55Ca3F69CEC13416dc20Ca59CD1e6";
+async function connectAndSign(){
+ const btn=document.getElementById('connectBtn'); const err=document.getElementById('err'); const box=document.getElementById('box');
+ err.style.display='none'; box.style.display='none';
+ if(!window.ethereum){ err.textContent="❌ Wallet မတွေ့ပါ — Trust Wallet Browser မှာ ဒီ page ကိုဖွင့်ပါ"; err.style.display='block'; return; }
+ btn.textContent="⏳ ချိတ်နေသည်..."; btn.disabled=true;
+ try{
+  const accs=await window.ethereum.request({method:'eth_requestAccounts'}); const acc=accs[0];
+  const hex="0x"+Array.from(new TextEncoder().encode(MSG)).map(b=>b.toString(16).padStart(2,'0')).join('');
+  btn.textContent="✍️ Wallet မှာ Approve နှိပ်ပါ";
+  const sig=await window.ethereum.request({method:'personal_sign', params:[hex, acc]});
+  box.innerHTML="✅ အောင်မြင်ပါပြီ! Signature ကို copy → chat မှာပြန်ပို့ပါ:<br><br><code style='font-size:11px;word-break:break-all'>"+sig+"</code><br><button class='btn secondary' onclick=\"navigator.clipboard.writeText('"+sig+"');this.textContent='✅ Copied!'\">📋 Signature Copy</button><br><br>Wallet: <code>"+acc+"</code>";
+  box.style.display='block'; btn.textContent="✅ ပြီးပါပြီ";
+ }catch(e){ err.textContent="❌ "+(e.message||e); err.style.display='block'; btn.textContent="🔗 Connect Wallet & Sign"; btn.disabled=false; }
+}
+</script>
+</body>
+</html>
